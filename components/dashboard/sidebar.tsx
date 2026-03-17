@@ -23,7 +23,8 @@ const navigation = [
   { nameKey: "nav.courses", href: "/dashboard/courses", icon: Video },
   { nameKey: "nav.mentors", href: "/dashboard/mentors", icon: Users },
   { nameKey: "nav.community", href: "/dashboard/community", icon: MessageSquare },
-  { nameKey: "nav.bookmarks", href: "/dashboard/bookmarks", icon: Bookmark },
+  { nameKey: "nav.bookmarks", href: "/dashboard/bookmarks", icon: Bookmark }, // Bookmarks link added
+  { nameKey: "nav.profile", href: "/dashboard/profile", icon: Users }, // Profile page link added
   { nameKey: "nav.analytics", href: "/dashboard/analytics", icon: BarChart3 },
   { nameKey: "nav.certificates", href: "/dashboard/certificates", icon: Award },
   { nameKey: "nav.notifications", href: "/dashboard/notifications", icon: Bell },
@@ -32,6 +33,7 @@ const navigation = [
 const secondaryNav = [
   { nameKey: "nav.settings", href: "/dashboard/settings", icon: Settings },
   { nameKey: "nav.help", href: "/dashboard/help", icon: HelpCircle },
+  { nameKey: "nav.support", href: "/dashboard/support", icon: HelpCircle }, // Support page link added
 ]
 
 export function DashboardSidebar() {
