@@ -9,6 +9,7 @@ import {
   Volume2, 
   VolumeX, 
   Maximize, 
+  Minimize,
   SkipBack, 
   SkipForward,
   Settings,
@@ -81,6 +82,7 @@ export function VideoPlayer({ videoId, onTimeUpdate, isConfused }: VideoPlayerPr
   const [isReady, setIsReady] = useState(false)
   const [showControls, setShowControls] = useState(true)
   const [mounted, setMounted] = useState(false)
+  const [isFullscreen, setIsFullscreen] = useState(false)
   const hideControlsTimeout = useRef<NodeJS.Timeout | null>(null)
 
   useEffect(() => {
@@ -168,6 +170,16 @@ export function VideoPlayer({ videoId, onTimeUpdate, isConfused }: VideoPlayerPr
     return () => clearInterval(interval)
   }, [isReady, onTimeUpdate])
 
+  // Monitor fullscreen changes (e.g., when user presses ESC)
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement)
+    }
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange)
+    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange)
+  }, [])
+
   // Listen for seekTo events from bookmarks
   useEffect(() => {
     const handleSeekTo = (event: CustomEvent<number>) => {
@@ -233,9 +245,16 @@ export function VideoPlayer({ videoId, onTimeUpdate, isConfused }: VideoPlayerPr
   const handleFullscreen = useCallback(() => {
     if (!containerRef.current) return
     if (document.fullscreenElement) {
-      document.exitFullscreen()
+      document.exitFullscreen().then(() => {
+        setIsFullscreen(false)
+      })
     } else {
-      containerRef.current.requestFullscreen()
+      containerRef.current.requestFullscreen().then(() => {
+        setIsFullscreen(true)
+      }).catch(() => {
+        // Fallback if fullscreen request fails
+        console.error("Fullscreen request failed")
+      })
     }
   }, [])
 
@@ -254,6 +273,39 @@ export function VideoPlayer({ videoId, onTimeUpdate, isConfused }: VideoPlayerPr
       console.error("Failed to save bookmark:", error)
     }
   }, [videoId, currentTime])
+
+  // Handle keyboard shortcuts (must be after all useCallback definitions)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!isReady) return
+      
+      switch (e.key.toLowerCase()) {
+        case ' ':
+          e.preventDefault()
+          togglePlay()
+          break
+        case 'f':
+          e.preventDefault()
+          handleFullscreen()
+          break
+        case 'arrowleft':
+          e.preventDefault()
+          handleSkip(-5)
+          break
+        case 'arrowright':
+          e.preventDefault()
+          handleSkip(5)
+          break
+        case 'm':
+          e.preventDefault()
+          toggleMute()
+          break
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [isReady, togglePlay, handleFullscreen, handleSkip, toggleMute])
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60)
@@ -286,9 +338,12 @@ export function VideoPlayer({ videoId, onTimeUpdate, isConfused }: VideoPlayerPr
   return (
     <div
       ref={containerRef}
-      className="relative aspect-video w-full bg-foreground/5"
+      className={`relative bg-foreground/5 ${
+        isFullscreen ? "fixed inset-0 z-50 aspect-auto" : "aspect-video w-full"
+      }`}
       onMouseMove={handleMouseMove}
-      onMouseLeave={() => isPlaying && setShowControls(false)}
+      onMouseLeave={() => isPlaying && setShowControls(false)
+      }
     >
       <div id="youtube-player" className="h-full w-full" />
 
@@ -401,18 +456,20 @@ export function VideoPlayer({ videoId, onTimeUpdate, isConfused }: VideoPlayerPr
               <Bookmark className="h-5 w-5" />
             </Button>
 
-            {/* Playback Speed */}
+            {/* Playback Speed & Shortcuts */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="ghost"
                   size="icon"
                   className="h-9 w-9 text-white hover:bg-white/20"
+                  title="Playback speed & keyboard shortcuts"
                 >
                   <Settings className="h-5 w-5" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
+              <DropdownMenuContent align="end" className="w-48">
+                <div className="px-3 py-2 text-sm font-semibold">Playback Speed</div>
                 {[0.5, 0.75, 1, 1.25, 1.5, 2].map((rate) => (
                   <DropdownMenuItem
                     key={rate}
@@ -422,6 +479,14 @@ export function VideoPlayer({ videoId, onTimeUpdate, isConfused }: VideoPlayerPr
                     {rate}x
                   </DropdownMenuItem>
                 ))}
+                <div className="my-2 border-t" />
+                <div className="px-3 py-2 text-sm font-semibold">Keyboard Shortcuts</div>
+                <div className="space-y-1 px-3 py-2 text-xs text-muted-foreground">
+                  <div><span className="font-mono bg-muted px-1.5 py-0.5 rounded">Space</span> Play/Pause</div>
+                  <div><span className="font-mono bg-muted px-1.5 py-0.5 rounded">F</span> Fullscreen</div>
+                  <div><span className="font-mono bg-muted px-1.5 py-0.5 rounded">M</span> Mute/Unmute</div>
+                  <div><span className="font-mono bg-muted px-1.5 py-0.5 rounded">←/→</span> -5s / +5s</div>
+                </div>
               </DropdownMenuContent>
             </DropdownMenu>
 
@@ -430,8 +495,13 @@ export function VideoPlayer({ videoId, onTimeUpdate, isConfused }: VideoPlayerPr
               size="icon"
               className="h-9 w-9 text-white hover:bg-white/20"
               onClick={handleFullscreen}
+              title={isFullscreen ? "Exit fullscreen (F)" : "Enter fullscreen (F)"}
             >
-              <Maximize className="h-5 w-5" />
+              {isFullscreen ? (
+                <Minimize className="h-5 w-5" />
+              ) : (
+                <Maximize className="h-5 w-5" />
+              )}
             </Button>
           </div>
         </div>

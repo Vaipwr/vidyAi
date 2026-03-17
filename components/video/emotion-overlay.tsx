@@ -172,6 +172,22 @@ export function EmotionOverlay({ onEmotionDetected, onConfusionDetected }: Emoti
     onConfusionDetected?.(false)
   }, [onEmotionDetected, onConfusionDetected])
 
+  // Auto-start detection on component mount
+  useEffect(() => {
+    // Try to automatically start webcam detection
+    const autoStart = async () => {
+      try {
+        await startWebcam()
+      } catch (error) {
+        // If camera fails, fall back to demo mode
+        console.log("Camera auto-start failed, using demo mode")
+        startDemoMode()
+      }
+    }
+    
+    autoStart()
+  }, [])
+
   // Cleanup on unmount
   useEffect(() => {
     return () => {
