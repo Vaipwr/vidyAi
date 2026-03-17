@@ -4,6 +4,12 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Play, Sparkles, Brain, Globe, ArrowRight } from "lucide-react"
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+  DialogTitle,
+} from "@/components/ui/dialog"
 
 export function LandingHero() {
   return (
@@ -31,7 +37,7 @@ export function LandingHero() {
                 </span>
               </h1>
               <p className="max-w-xl text-lg leading-relaxed text-muted-foreground text-pretty">
-                VidyAI++ uses AI to detect when you are confused and provides instant explanations 
+                VidyAI++ uses AI to detect when you are confused and provides instant explanations
                 in your preferred language. Education that understands you.
               </p>
             </div>
@@ -43,12 +49,27 @@ export function LandingHero() {
                   <ArrowRight className="h-5 w-5" />
                 </Link>
               </Button>
-              <Button size="lg" variant="outline" className="gap-2 text-base" asChild>
-                <Link href="/demo">
-                  <Play className="h-5 w-5" />
-                  Watch Demo
-                </Link>
-              </Button>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button size="lg" variant="outline" className="gap-2 text-base">
+                    <Play className="h-5 w-5" />
+                    Watch Demo
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-4xl p-0 overflow-hidden bg-black/95 border-none">
+                  <DialogTitle className="sr-only">Platform Demo Video</DialogTitle>
+                  <div className="aspect-video w-full">
+                    <video
+                      controls
+                      autoPlay
+                      className="h-full w-full object-contain"
+                    >
+                      <source src="/AI_Powered_Learning_Platform_Features.mp4" type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
+                </DialogContent>
+              </Dialog>
             </div>
 
             {/* Feature Pills */}
@@ -76,13 +97,19 @@ export function LandingHero() {
                 <div className="h-full w-full rounded-3xl bg-card p-6 shadow-2xl">
                   {/* Video Preview Area */}
                   <div className="relative aspect-video overflow-hidden rounded-2xl bg-gradient-to-br from-primary/10 to-accent/10">
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/90 shadow-lg transition-transform hover:scale-110">
-                        <Play className="h-7 w-7 translate-x-0.5 text-primary-foreground" />
-                      </div>
-                    </div>
+                    <video
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      className="absolute inset-0 h-full w-full object-cover"
+                      poster="/placeholder-video-poster.jpg"
+                    >
+                      <source src="/AI_Powered_Learning_Platform_Features.mp4" type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
                     {/* Emotion Indicator */}
-                    <div className="absolute right-3 top-3 flex items-center gap-2 rounded-full bg-card/90 px-3 py-1.5 backdrop-blur">
+                    <div className="absolute right-3 top-3 flex items-center gap-2 rounded-full bg-card/90 px-3 py-1.5 backdrop-blur z-10">
                       <span className="relative flex h-2.5 w-2.5">
                         <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success opacity-75"></span>
                         <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-success"></span>
