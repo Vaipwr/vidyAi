@@ -6,20 +6,23 @@ import { LandingTestimonials } from "@/components/landing/testimonials"
 import { LandingCTA } from "@/components/landing/cta"
 import { LandingHeader } from "@/components/landing/header"
 import { LandingFooter } from "@/components/landing/footer"
+import { LanguageProvider } from "@/lib/i18n/LanguageContext"
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-background">
-      <LandingHeader />
-      <main>
-        <LandingHero />
-        <LandingStats />
-        <LandingFeatures />
-        <LandingLanguages />
-        <LandingTestimonials />
-        <LandingCTA />
-      </main>
-      <LandingFooter />
-    </div>
+    <LanguageProvider>
+      <div className="min-h-screen bg-background">
+        <LandingHeader />
+        <main>
+          <LandingHero />
+          <LandingStats />
+          <LandingFeatures />
+          <LandingLanguages />
+          <LandingTestimonials />
+          <LandingCTA />
+        </main>
+        <LandingFooter />
+      </div>
+    </LanguageProvider>
   )
 }

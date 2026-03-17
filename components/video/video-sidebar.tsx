@@ -4,6 +4,7 @@ import Link from "next/link"
 import useSWR from "swr"
 import { PlayCircle, CheckCircle, Clock, BookmarkIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { useTranslation } from "@/lib/i18n/LanguageContext"
 
 interface VideoSidebarProps {
   courseId: string
@@ -21,6 +22,7 @@ interface Video {
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
 export function VideoSidebar({ courseId, currentVideoId }: VideoSidebarProps) {
+  const { t } = useTranslation()
   const { data: videos, isLoading } = useSWR<Video[]>(
     `/api/courses/${courseId}/videos`,
     fetcher
@@ -52,9 +54,9 @@ export function VideoSidebar({ courseId, currentVideoId }: VideoSidebarProps) {
     <div className="flex h-full flex-col">
       {/* Header */}
       <div className="border-b border-border p-4">
-        <h3 className="font-semibold text-foreground">Course Videos</h3>
+        <h3 className="font-semibold text-foreground">{t("video.courseVideos")}</h3>
         <p className="text-sm text-muted-foreground">
-          {videos?.length || 0} videos in this course
+          {videos?.length || 0} {t("video.videosInCourse")}
         </p>
       </div>
 

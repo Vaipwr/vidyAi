@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
@@ -20,12 +20,12 @@ import {
 } from "@/components/ui/sheet"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
-import { 
-  Menu, 
-  Search, 
-  Bell, 
-  Globe, 
-  User, 
+import {
+  Menu,
+  Search,
+  Bell,
+  Globe,
+  User,
   Settings,
   BookOpen,
   LayoutDashboard,
@@ -35,8 +35,10 @@ import {
   BarChart3,
   Bookmark,
   Award,
-  Flame
+  Flame,
+  Check
 } from "lucide-react"
+import { useTranslation } from "@/lib/i18n/LanguageContext"
 
 interface DashboardHeaderProps {
   user: {
@@ -49,18 +51,24 @@ interface DashboardHeaderProps {
 }
 
 const mobileNavigation = [
-  { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-  { name: "My Courses", href: "/dashboard/courses", icon: Video },
-  { name: "Mentors", href: "/dashboard/mentors", icon: Users },
-  { name: "Community", href: "/dashboard/community", icon: MessageSquare },
-  { name: "Bookmarks", href: "/dashboard/bookmarks", icon: Bookmark },
-  { name: "Analytics", href: "/dashboard/analytics", icon: BarChart3 },
-  { name: "Certificates", href: "/dashboard/certificates", icon: Award },
+  { nameKey: "nav.dashboard", href: "/dashboard", icon: LayoutDashboard },
+  { nameKey: "nav.courses", href: "/dashboard/courses", icon: Video },
+  { nameKey: "nav.mentors", href: "/dashboard/mentors", icon: Users },
+  { nameKey: "nav.community", href: "/dashboard/community", icon: MessageSquare },
+  { nameKey: "nav.bookmarks", href: "/dashboard/bookmarks", icon: Bookmark },
+  { nameKey: "nav.analytics", href: "/dashboard/analytics", icon: BarChart3 },
+  { nameKey: "nav.certificates", href: "/dashboard/certificates", icon: Award },
 ]
 
 export function DashboardHeader({ user }: DashboardHeaderProps) {
   const pathname = usePathname()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [mounted, setMounted] = useState(false)
+  const { setLanguage, language: currentLang, t } = useTranslation()
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b border-border bg-background/95 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/60 lg:px-6">
@@ -88,17 +96,16 @@ export function DashboardHeader({ user }: DashboardHeaderProps) {
               const isActive = pathname === item.href || pathname.startsWith(item.href + "/")
               return (
                 <Link
-                  key={item.name}
+                  key={item.nameKey}
                   href={item.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
-                    isActive
-                      ? "bg-primary/10 text-primary"
-                      : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                  }`}
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${isActive
+                    ? "bg-primary/10 text-primary"
+                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                    }`}
                 >
                   <item.icon className="h-5 w-5" />
-                  {item.name}
+                  {t(item.nameKey)}
                 </Link>
               )
             })}
@@ -132,23 +139,32 @@ export function DashboardHeader({ user }: DashboardHeaderProps) {
         </Badge>
 
         {/* Language Selector */}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon">
-              <Globe className="h-5 w-5" />
-              <span className="sr-only">Change language</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Language</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>English</DropdownMenuItem>
-            <DropdownMenuItem>हिंदी (Hindi)</DropdownMenuItem>
-            <DropdownMenuItem>मराठी (Marathi)</DropdownMenuItem>
-            <DropdownMenuItem>தமிழ் (Tamil)</DropdownMenuItem>
-            <DropdownMenuItem>తెలుగు (Telugu)</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        {mounted && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <Globe className="h-5 w-5" />
+                <span className="sr-only">Change language</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Language</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => setLanguage("en")} className="justify-between">
+                English {currentLang === "en" && <Check className="h-4 w-4" />}
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setLanguage("hi")} className="justify-between">
+                हिंदी (Hindi) {currentLang === "hi" && <Check className="h-4 w-4" />}
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setLanguage("mr")} className="justify-between">
+                मराठी (Marathi) {currentLang === "mr" && <Check className="h-4 w-4" />}
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setLanguage("ta")} className="justify-between">
+                தமிழ் (Tamil) {currentLang === "ta" && <Check className="h-4 w-4" />}
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
 
         {/* Notifications */}
         <Button variant="ghost" size="icon" className="relative">

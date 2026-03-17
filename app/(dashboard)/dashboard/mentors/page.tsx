@@ -6,11 +6,13 @@ import { Input } from "@/components/ui/input"
 import { MentorCard } from "@/components/mentors/mentor-card"
 import { BookMentorDialog } from "@/components/mentors/book-mentor-dialog"
 import { Search, Users } from "lucide-react"
+import { useTranslation } from "@/lib/i18n/LanguageContext"
 import type { Mentor } from "@/lib/db"
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
 export default function MentorsPage() {
+  const { t } = useTranslation()
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedExpertise, setSelectedExpertise] = useState("all")
   const [selectedMentor, setSelectedMentor] = useState<Mentor | null>(null)
@@ -34,9 +36,9 @@ export default function MentorsPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-foreground">Find a Mentor</h1>
+        <h1 className="text-2xl font-bold text-foreground">{t("dash.mentors.title")}</h1>
         <p className="mt-1 text-muted-foreground">
-          Connect with experienced mentors who can guide you through your learning journey
+          {t("dash.mentors.desc")}
         </p>
       </div>
 
@@ -45,7 +47,7 @@ export default function MentorsPage() {
         <div className="relative flex-1 max-w-md">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
-            placeholder="Search by name or expertise..."
+            placeholder={t("dash.mentors.search")}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-10"
@@ -59,11 +61,10 @@ export default function MentorsPage() {
           <button
             key={option.id}
             onClick={() => setSelectedExpertise(option.id)}
-            className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
-              selectedExpertise === option.id
-                ? "bg-primary text-primary-foreground"
-                : "bg-muted text-muted-foreground hover:bg-muted/80"
-            }`}
+            className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${selectedExpertise === option.id
+              ? "bg-primary text-primary-foreground"
+              : "bg-muted text-muted-foreground hover:bg-muted/80"
+              }`}
           >
             {option.label}
           </button>
@@ -93,9 +94,9 @@ export default function MentorsPage() {
       ) : (
         <div className="rounded-xl border border-border bg-card p-12 text-center">
           <Users className="mx-auto h-12 w-12 text-muted-foreground" />
-          <h3 className="mt-4 text-lg font-semibold text-foreground">No mentors found</h3>
+          <h3 className="mt-4 text-lg font-semibold text-foreground">{t("dash.mentors.empty.title")}</h3>
           <p className="mt-2 text-muted-foreground">
-            Try adjusting your search or filter criteria.
+            {t("dash.mentors.empty.desc")}
           </p>
         </div>
       )}

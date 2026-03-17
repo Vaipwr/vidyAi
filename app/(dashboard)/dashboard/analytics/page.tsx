@@ -7,19 +7,21 @@ import { EmotionChart } from "@/components/analytics/emotion-chart"
 import { EmotionTrendChart } from "@/components/analytics/emotion-trend-chart"
 import { LearningProgressChart } from "@/components/analytics/learning-progress-chart"
 import { WeeklyActivityChart } from "@/components/analytics/weekly-activity-chart"
-import { 
-  Brain, 
-  TrendingUp, 
-  Clock, 
-  Target, 
+import {
+  Brain,
+  TrendingUp,
+  Clock,
+  Target,
   Flame,
   BookOpen,
   Trophy
 } from "lucide-react"
+import { useTranslation } from "@/lib/i18n/LanguageContext"
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
 export default function AnalyticsPage() {
+  const { t } = useTranslation()
   const { data: stats, isLoading } = useSWR("/api/analytics/stats", fetcher)
   const { data: emotions } = useSWR("/api/emotions?days=30", fetcher)
 
@@ -43,9 +45,9 @@ export default function AnalyticsPage() {
     <div className="mx-auto max-w-7xl px-4 py-8">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-foreground">Learning Analytics</h1>
+        <h1 className="text-3xl font-bold text-foreground">{t("dash.analytics.title")}</h1>
         <p className="mt-2 text-muted-foreground">
-          Track your learning progress, understand your emotions, and optimize your study habits
+          {t("dash.analytics.desc")}
         </p>
       </div>
 
@@ -57,7 +59,7 @@ export default function AnalyticsPage() {
               <Clock className="h-6 w-6 text-primary" />
             </div>
             <div>
-              <p className="text-sm text-muted-foreground">Total Watch Time</p>
+              <p className="text-sm text-muted-foreground">{t("dash.analytics.watchTime")}</p>
               <p className="text-2xl font-bold text-foreground">
                 {stats?.totalWatchTime || 0}h
               </p>
@@ -71,7 +73,7 @@ export default function AnalyticsPage() {
               <BookOpen className="h-6 w-6 text-success" />
             </div>
             <div>
-              <p className="text-sm text-muted-foreground">Courses Completed</p>
+              <p className="text-sm text-muted-foreground">{t("dash.analytics.completed")}</p>
               <p className="text-2xl font-bold text-foreground">
                 {stats?.coursesCompleted || 0}
               </p>
@@ -85,7 +87,7 @@ export default function AnalyticsPage() {
               <Flame className="h-6 w-6 text-warning" />
             </div>
             <div>
-              <p className="text-sm text-muted-foreground">Current Streak</p>
+              <p className="text-sm text-muted-foreground">{t("dash.analytics.streak")}</p>
               <p className="text-2xl font-bold text-foreground">
                 {stats?.currentStreak || 0} days
               </p>
@@ -99,7 +101,7 @@ export default function AnalyticsPage() {
               <Trophy className="h-6 w-6 text-accent" />
             </div>
             <div>
-              <p className="text-sm text-muted-foreground">Quizzes Passed</p>
+              <p className="text-sm text-muted-foreground">{t("dash.analytics.quizzes")}</p>
               <p className="text-2xl font-bold text-foreground">
                 {stats?.quizzesPassed || 0}
               </p>
@@ -113,15 +115,15 @@ export default function AnalyticsPage() {
         <TabsList>
           <TabsTrigger value="emotions" className="gap-2">
             <Brain className="h-4 w-4" />
-            Emotion Analytics
+            {t("dash.analytics.tab.emotions")}
           </TabsTrigger>
           <TabsTrigger value="progress" className="gap-2">
             <TrendingUp className="h-4 w-4" />
-            Learning Progress
+            {t("dash.analytics.tab.progress")}
           </TabsTrigger>
           <TabsTrigger value="activity" className="gap-2">
             <Target className="h-4 w-4" />
-            Weekly Activity
+            {t("dash.analytics.tab.activity")}
           </TabsTrigger>
         </TabsList>
 
@@ -129,9 +131,9 @@ export default function AnalyticsPage() {
           <div className="grid gap-6 lg:grid-cols-2">
             <Card>
               <CardHeader>
-                <CardTitle>Emotion Distribution</CardTitle>
+                <CardTitle>{t("dash.analytics.card.emotion.title")}</CardTitle>
                 <CardDescription>
-                  Your emotional states while learning over the past 30 days
+                  {t("dash.analytics.card.emotion.desc")}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -141,9 +143,9 @@ export default function AnalyticsPage() {
 
             <Card>
               <CardHeader>
-                <CardTitle>Emotion Trends Over Time</CardTitle>
+                <CardTitle>{t("dash.analytics.card.trend.title")}</CardTitle>
                 <CardDescription>
-                  Track how your learning emotions change throughout the week with multilingual insights
+                  {t("dash.analytics.card.trend.desc")}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -156,9 +158,9 @@ export default function AnalyticsPage() {
         <TabsContent value="progress">
           <Card>
             <CardHeader>
-              <CardTitle>Learning Progress</CardTitle>
+              <CardTitle>{t("dash.analytics.card.prog.title")}</CardTitle>
               <CardDescription>
-                Your course completion progress over the past 4 weeks
+                {t("dash.analytics.card.prog.desc")}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -170,9 +172,9 @@ export default function AnalyticsPage() {
         <TabsContent value="activity">
           <Card>
             <CardHeader>
-              <CardTitle>Weekly Study Activity</CardTitle>
+              <CardTitle>{t("dash.analytics.card.act.title")}</CardTitle>
               <CardDescription>
-                Hours spent learning each day of the week
+                {t("dash.analytics.card.act.desc")}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -185,9 +187,9 @@ export default function AnalyticsPage() {
       {/* Insights */}
       <Card className="mt-8">
         <CardHeader>
-          <CardTitle>AI Learning Insights</CardTitle>
+          <CardTitle>{t("dash.analytics.insights.title")}</CardTitle>
           <CardDescription>
-            Personalized recommendations based on your learning patterns
+            {t("dash.analytics.insights.desc")}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -196,9 +198,9 @@ export default function AnalyticsPage() {
               <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
                 <Brain className="h-5 w-5 text-primary" />
               </div>
-              <h4 className="mt-3 font-semibold text-foreground">Best Learning Time</h4>
+              <h4 className="mt-3 font-semibold text-foreground">{t("dash.analytics.ins1.title")}</h4>
               <p className="mt-1 text-sm text-muted-foreground">
-                Your focus is highest between 4-6 PM. Try scheduling important topics during this time.
+                {t("dash.analytics.ins1.desc")}
               </p>
             </div>
 
@@ -206,9 +208,9 @@ export default function AnalyticsPage() {
               <div className="flex h-10 w-10 items-center justify-center rounded-full bg-success/10">
                 <TrendingUp className="h-5 w-5 text-success" />
               </div>
-              <h4 className="mt-3 font-semibold text-foreground">Strongest Subject</h4>
+              <h4 className="mt-3 font-semibold text-foreground">{t("dash.analytics.ins2.title")}</h4>
               <p className="mt-1 text-sm text-muted-foreground">
-                You excel in Mathematics! Consider helping others in the community forum.
+                {t("dash.analytics.ins2.desc")}
               </p>
             </div>
 
@@ -216,9 +218,9 @@ export default function AnalyticsPage() {
               <div className="flex h-10 w-10 items-center justify-center rounded-full bg-warning/10">
                 <Target className="h-5 w-5 text-warning" />
               </div>
-              <h4 className="mt-3 font-semibold text-foreground">Area for Improvement</h4>
+              <h4 className="mt-3 font-semibold text-foreground">{t("dash.analytics.ins3.title")}</h4>
               <p className="mt-1 text-sm text-muted-foreground">
-                Physics concepts show more confusion. Book a mentor session for extra help.
+                {t("dash.analytics.ins3.desc")}
               </p>
             </div>
           </div>

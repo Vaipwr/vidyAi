@@ -11,13 +11,15 @@ import { BookmarksPanel } from "@/components/video/bookmarks-panel"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { MessageSquare, List, X } from "lucide-react"
+import { useTranslation } from "@/lib/i18n/LanguageContext"
 
 const fetcher = (url: string) => fetch(url).then(res => res.json())
 
 export default function VideoLearningPage() {
+  const { t } = useTranslation()
   const params = useParams()
   const videoId = params.videoId as string
-  
+
   const { data: video, isLoading } = useSWR(`/api/videos/${videoId}`, fetcher)
   const [showChat, setShowChat] = useState(false)
   const [showSidebar, setShowSidebar] = useState(true)
@@ -30,7 +32,7 @@ export default function VideoLearningPage() {
       <div className="flex h-[calc(100vh-4rem)] items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           <div className="h-12 w-12 animate-spin rounded-full border-4 border-primary border-t-transparent" />
-          <p className="text-muted-foreground">Loading video...</p>
+          <p className="text-muted-foreground">{t("dash.video.loading")}</p>
         </div>
       </div>
     )
@@ -40,8 +42,8 @@ export default function VideoLearningPage() {
     return (
       <div className="flex h-[calc(100vh-4rem)] items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-foreground">Video not found</h2>
-          <p className="mt-2 text-muted-foreground">The video you are looking for does not exist.</p>
+          <h2 className="text-2xl font-bold text-foreground">{t("dash.video.notFound")}</h2>
+          <p className="mt-2 text-muted-foreground">{t("dash.video.notFoundDesc")}</p>
         </div>
       </div>
     )
@@ -62,12 +64,12 @@ export default function VideoLearningPage() {
             onConfusionDetected={setIsConfused}
           />
         </div>
-        
+
         {/* Video Info */}
         <div className="border-t border-border bg-card p-4">
           <h1 className="text-xl font-bold text-foreground">{video.title}</h1>
           <p className="mt-1 text-sm text-muted-foreground">{video.description}</p>
-          
+
           {/* Mobile Controls */}
           <div className="mt-4 flex gap-2 lg:hidden">
             <Button
@@ -79,7 +81,7 @@ export default function VideoLearningPage() {
               }}
             >
               <List className="mr-2 h-4 w-4" />
-              Playlist
+              {t("dash.video.btn.playlist")}
             </Button>
             <Button
               variant={showChat ? "default" : "outline"}
@@ -90,7 +92,7 @@ export default function VideoLearningPage() {
               }}
             >
               <MessageSquare className="mr-2 h-4 w-4" />
-              AI Help
+              {t("dash.video.btn.aiHelp")}
             </Button>
           </div>
         </div>
@@ -100,8 +102,8 @@ export default function VideoLearningPage() {
       <div className={`${showSidebar ? "block" : "hidden"} w-full border-l border-border bg-card lg:block lg:w-96`}>
         <Tabs defaultValue="playlist" className="h-full flex flex-col">
           <TabsList className="w-full rounded-none border-b">
-            <TabsTrigger value="playlist" className="flex-1">Playlist</TabsTrigger>
-            <TabsTrigger value="bookmarks" className="flex-1">Bookmarks</TabsTrigger>
+            <TabsTrigger value="playlist" className="flex-1">{t("dash.video.tab.playlist")}</TabsTrigger>
+            <TabsTrigger value="bookmarks" className="flex-1">{t("dash.video.tab.bookmarks")}</TabsTrigger>
           </TabsList>
           <TabsContent value="playlist" className="flex-1 overflow-auto m-0">
             <VideoSidebar
@@ -123,7 +125,7 @@ export default function VideoLearningPage() {
       <div className={`${showChat ? "block" : "hidden"} fixed inset-0 z-50 bg-background lg:relative lg:block lg:w-96`}>
         <div className="flex h-full flex-col">
           <div className="flex items-center justify-between border-b border-border p-4 lg:hidden">
-            <h3 className="font-semibold">AI Assistant</h3>
+            <h3 className="font-semibold">{t("dash.video.ai.title")}</h3>
             <Button variant="ghost" size="icon" onClick={() => setShowChat(false)}>
               <X className="h-5 w-5" />
             </Button>

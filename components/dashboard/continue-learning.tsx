@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { Play, Clock, ArrowRight } from "lucide-react"
+import { useTranslation } from "@/lib/i18n/LanguageContext"
 import type { Video, Course } from "@/lib/db"
 
 interface ContinueLearningProps {
@@ -12,25 +13,26 @@ interface ContinueLearningProps {
 }
 
 export function ContinueLearning({ videos }: ContinueLearningProps) {
+  const { t } = useTranslation()
   const validVideos = videos.filter(v => v.course)
 
   if (validVideos.length === 0) {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Continue Learning</CardTitle>
+          <CardTitle>{t("dash.continue.title")}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col items-center justify-center py-8 text-center">
             <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
               <Play className="h-8 w-8 text-primary" />
             </div>
-            <h3 className="text-lg font-semibold text-foreground">Start Your Journey</h3>
+            <h3 className="text-lg font-semibold text-foreground">{t("dash.continue.start")}</h3>
             <p className="mt-2 text-sm text-muted-foreground">
-              Browse our courses and start learning today!
+              {t("dash.continue.browse")}
             </p>
             <Button asChild className="mt-4">
-              <Link href="/dashboard/courses">Browse Courses</Link>
+              <Link href="/dashboard/courses">{t("dash.continue.btn")}</Link>
             </Button>
           </div>
         </CardContent>
@@ -41,10 +43,10 @@ export function ContinueLearning({ videos }: ContinueLearningProps) {
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle>Continue Learning</CardTitle>
+        <CardTitle>{t("dash.continue.title")}</CardTitle>
         <Button variant="ghost" size="sm" asChild>
           <Link href="/dashboard/courses" className="gap-1">
-            View All <ArrowRight className="h-4 w-4" />
+            {t("dash.continue.viewAll")} <ArrowRight className="h-4 w-4" />
           </Link>
         </Button>
       </CardHeader>

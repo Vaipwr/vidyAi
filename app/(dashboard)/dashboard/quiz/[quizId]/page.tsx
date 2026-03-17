@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { CheckCircle, XCircle, ArrowRight, Trophy, RefreshCw } from "lucide-react"
+import { useTranslation } from "@/lib/i18n/LanguageContext"
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
@@ -27,6 +28,7 @@ interface Quiz {
 }
 
 export default function QuizPage() {
+  const { t } = useTranslation()
   const params = useParams()
   const router = useRouter()
   const quizId = params.quizId as string
@@ -68,7 +70,7 @@ export default function QuizPage() {
     if (selectedAnswer === null) return
 
     setShowResult(true)
-    
+
     setTimeout(() => {
       if (currentQuestion < quiz.questions.length - 1) {
         setCurrentQuestion((prev) => prev + 1)
@@ -95,47 +97,46 @@ export default function QuizPage() {
 
   if (quizComplete) {
     const score = calculateScore()
-    
+
     return (
       <div className="mx-auto max-w-3xl px-4 py-8">
         <Card className="text-center">
           <CardContent className="py-12">
-            <div className={`mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full ${
-              score.passed ? "bg-success/20" : "bg-destructive/20"
-            }`}>
+            <div className={`mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full ${score.passed ? "bg-success/20" : "bg-destructive/20"
+              }`}>
               {score.passed ? (
                 <Trophy className="h-12 w-12 text-success" />
               ) : (
                 <RefreshCw className="h-12 w-12 text-destructive" />
               )}
             </div>
-            
+
             <h2 className="text-3xl font-bold text-foreground">
-              {score.passed ? "Congratulations!" : "Keep Learning!"}
+              {score.passed ? t("dash.quiz.congrats") : t("dash.quiz.keepLearning")}
             </h2>
-            
+
             <p className="mt-2 text-muted-foreground">
               {score.passed
-                ? "You've passed the quiz!"
-                : `You need ${quiz.passing_score}% to pass. Try again!`}
+                ? t("dash.quiz.passedMsg")
+                : `${t("dash.quiz.failedMsg1")} ${quiz.passing_score}${t("dash.quiz.failedMsg2")}`}
             </p>
 
             <div className="mt-8 flex justify-center gap-8">
               <div className="text-center">
                 <p className="text-4xl font-bold text-primary">{score.percentage}%</p>
-                <p className="text-sm text-muted-foreground">Score</p>
+                <p className="text-sm text-muted-foreground">{t("dash.quiz.score")}</p>
               </div>
               <div className="text-center">
                 <p className="text-4xl font-bold text-foreground">
                   {score.correct}/{score.total}
                 </p>
-                <p className="text-sm text-muted-foreground">Correct</p>
+                <p className="text-sm text-muted-foreground">{t("dash.quiz.correct")}</p>
               </div>
             </div>
 
             <div className="mt-8 flex justify-center gap-4">
               <Button variant="outline" onClick={() => router.push("/dashboard/courses")}>
-                Back to Courses
+                {t("dash.quiz.btn.back")}
               </Button>
               <Button onClick={() => {
                 setCurrentQuestion(0)
@@ -145,7 +146,7 @@ export default function QuizPage() {
                 setQuizComplete(false)
               }}>
                 <RefreshCw className="mr-2 h-4 w-4" />
-                Retry Quiz
+                {t("dash.quiz.btn.retry")}
               </Button>
             </div>
           </CardContent>
@@ -166,7 +167,7 @@ export default function QuizPage() {
       <div className="mb-6">
         <div className="mb-2 flex items-center justify-between text-sm">
           <span className="text-muted-foreground">
-            Question {currentQuestion + 1} of {quiz.questions.length}
+            {t("dash.quiz.question")} {currentQuestion + 1} {t("dash.quiz.of")} {quiz.questions.length}
           </span>
           <span className="font-medium">{Math.round(progress)}%</span>
         </div>
@@ -189,25 +190,23 @@ export default function QuizPage() {
                 key={index}
                 onClick={() => handleAnswer(index)}
                 disabled={showResult}
-                className={`flex w-full items-center gap-3 rounded-lg border p-4 text-left transition-all ${
-                  isCorrect
+                className={`flex w-full items-center gap-3 rounded-lg border p-4 text-left transition-all ${isCorrect
                     ? "border-success bg-success/10"
                     : isWrong
-                    ? "border-destructive bg-destructive/10"
-                    : isSelected
-                    ? "border-primary bg-primary/5"
-                    : "border-border hover:border-primary hover:bg-muted"
-                }`}
+                      ? "border-destructive bg-destructive/10"
+                      : isSelected
+                        ? "border-primary bg-primary/5"
+                        : "border-border hover:border-primary hover:bg-muted"
+                  }`}
               >
-                <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 text-sm font-medium ${
-                  isCorrect
+                <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 text-sm font-medium ${isCorrect
                     ? "border-success text-success"
                     : isWrong
-                    ? "border-destructive text-destructive"
-                    : isSelected
-                    ? "border-primary bg-primary text-primary-foreground"
-                    : "border-muted-foreground/30"
-                }`}>
+                      ? "border-destructive text-destructive"
+                      : isSelected
+                        ? "border-primary bg-primary text-primary-foreground"
+                        : "border-muted-foreground/30"
+                  }`}>
                   {isCorrect ? (
                     <CheckCircle className="h-5 w-5" />
                   ) : isWrong ? (
@@ -224,7 +223,7 @@ export default function QuizPage() {
           {/* Explanation */}
           {showResult && (
             <div className="mt-4 rounded-lg bg-muted p-4">
-              <p className="text-sm font-medium text-foreground">Explanation:</p>
+              <p className="text-sm font-medium text-foreground">{t("dash.quiz.explanation")}</p>
               <p className="mt-1 text-sm text-muted-foreground">
                 {question.explanation}
               </p>
@@ -242,11 +241,11 @@ export default function QuizPage() {
         >
           {currentQuestion < quiz.questions.length - 1 ? (
             <>
-              Next Question
+              {t("dash.quiz.btn.next")}
               <ArrowRight className="h-4 w-4" />
             </>
           ) : (
-            "Finish Quiz"
+            t("dash.quiz.btn.finish")
           )}
         </Button>
       </div>

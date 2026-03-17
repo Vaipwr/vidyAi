@@ -1,29 +1,32 @@
+"use client"
+
 import Link from "next/link"
 import { BookOpen, Twitter, Linkedin, Github, Youtube, Mail } from "lucide-react"
+import { useTranslation } from "@/lib/i18n/LanguageContext"
 
 const footerLinks = {
   platform: [
-    { label: "Courses", href: "/courses" },
-    { label: "Mentors", href: "/mentors" },
-    { label: "Community", href: "/community" },
-    { label: "Pricing", href: "/pricing" },
+    { labelKey: "footer.link.courses", href: "/courses" },
+    { labelKey: "footer.link.mentors", href: "/mentors" },
+    { labelKey: "footer.link.community", href: "/community" },
+    { labelKey: "footer.link.pricing", href: "/pricing" },
   ],
   support: [
-    { label: "Help Center", href: "/help" },
-    { label: "Contact Us", href: "/contact" },
-    { label: "FAQ", href: "/faq" },
-    { label: "Feedback", href: "/feedback" },
+    { labelKey: "footer.link.help", href: "/help" },
+    { labelKey: "footer.link.contact", href: "/contact" },
+    { labelKey: "footer.link.faq", href: "/faq" },
+    { labelKey: "footer.link.feedback", href: "/feedback" },
   ],
   legal: [
-    { label: "Privacy Policy", href: "/privacy" },
-    { label: "Terms of Service", href: "/terms" },
-    { label: "Cookie Policy", href: "/cookies" },
+    { labelKey: "footer.link.privacy", href: "/privacy" },
+    { labelKey: "footer.link.terms", href: "/terms" },
+    { labelKey: "footer.link.cookies", href: "/cookies" },
   ],
   languages: [
-    { label: "English", href: "?lang=en" },
-    { label: "Hindi", href: "?lang=hi" },
-    { label: "Marathi", href: "?lang=mr" },
-    { label: "Tamil", href: "?lang=ta" },
+    { labelKey: "footer.link.en", href: "?lang=en" },
+    { labelKey: "footer.link.hi", href: "?lang=hi" },
+    { labelKey: "footer.link.mr", href: "?lang=mr" },
+    { labelKey: "footer.link.ta", href: "?lang=ta" },
   ],
 }
 
@@ -35,6 +38,8 @@ const socialLinks = [
 ]
 
 export function LandingFooter() {
+  const { t } = useTranslation()
+
   return (
     <footer className="border-t border-border bg-muted/30">
       <div className="mx-auto max-w-7xl px-4 py-12 lg:px-8 lg:py-16">
@@ -50,8 +55,7 @@ export function LandingFooter() {
               </span>
             </Link>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted-foreground">
-              Empowering underprivileged students across India with AI-driven personalized 
-              education in their mother tongue.
+              {t("footer.desc")}
             </p>
             {/* Social Links */}
             <div className="mt-6 flex gap-4">
@@ -72,12 +76,12 @@ export function LandingFooter() {
 
           {/* Links */}
           <div>
-            <h3 className="text-sm font-semibold text-foreground">Platform</h3>
+            <h3 className="text-sm font-semibold text-foreground">{t("footer.platform")}</h3>
             <ul className="mt-4 space-y-3">
               {footerLinks.platform.map((link) => (
                 <li key={link.href}>
                   <Link href={link.href} className="text-sm text-muted-foreground hover:text-foreground">
-                    {link.label}
+                    {t(link.labelKey)}
                   </Link>
                 </li>
               ))}
@@ -85,12 +89,12 @@ export function LandingFooter() {
           </div>
 
           <div>
-            <h3 className="text-sm font-semibold text-foreground">Support</h3>
+            <h3 className="text-sm font-semibold text-foreground">{t("footer.support")}</h3>
             <ul className="mt-4 space-y-3">
               {footerLinks.support.map((link) => (
                 <li key={link.href}>
                   <Link href={link.href} className="text-sm text-muted-foreground hover:text-foreground">
-                    {link.label}
+                    {t(link.labelKey)}
                   </Link>
                 </li>
               ))}
@@ -98,12 +102,12 @@ export function LandingFooter() {
           </div>
 
           <div>
-            <h3 className="text-sm font-semibold text-foreground">Legal</h3>
+            <h3 className="text-sm font-semibold text-foreground">{t("footer.legal")}</h3>
             <ul className="mt-4 space-y-3">
               {footerLinks.legal.map((link) => (
                 <li key={link.href}>
                   <Link href={link.href} className="text-sm text-muted-foreground hover:text-foreground">
-                    {link.label}
+                    {t(link.labelKey)}
                   </Link>
                 </li>
               ))}
@@ -111,12 +115,12 @@ export function LandingFooter() {
           </div>
 
           <div>
-            <h3 className="text-sm font-semibold text-foreground">Languages</h3>
+            <h3 className="text-sm font-semibold text-foreground">{t("footer.languages")}</h3>
             <ul className="mt-4 space-y-3">
               {footerLinks.languages.map((link) => (
                 <li key={link.href}>
                   <Link href={link.href} className="text-sm text-muted-foreground hover:text-foreground">
-                    {link.label}
+                    {t(link.labelKey)}
                   </Link>
                 </li>
               ))}
@@ -127,7 +131,7 @@ export function LandingFooter() {
         {/* Bottom Bar */}
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 sm:flex-row">
           <p className="text-sm text-muted-foreground">
-            {new Date().getFullYear()} VidyAI++. All rights reserved.
+            {new Date().getFullYear()} {t("footer.rights")}
           </p>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Mail className="h-4 w-4" />

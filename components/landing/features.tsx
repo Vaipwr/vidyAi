@@ -1,9 +1,12 @@
-import { 
-  Brain, 
-  Video, 
-  MessageSquare, 
-  BarChart3, 
-  Bookmark, 
+"use client"
+
+import { useTranslation } from "@/lib/i18n/LanguageContext"
+import {
+  Brain,
+  Video,
+  MessageSquare,
+  BarChart3,
+  Bookmark,
   Bell,
   Users,
   Award,
@@ -68,18 +71,18 @@ const features = [
 ]
 
 export function LandingFeatures() {
+  const { t } = useTranslation()
+
   return (
     <section className="px-4 py-20 lg:py-28">
       <div className="mx-auto max-w-7xl">
         {/* Section Header */}
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl text-balance">
-            Everything You Need to{" "}
-            <span className="text-primary">Succeed</span>
+            {t("features.title")}
           </h2>
           <p className="mt-4 text-lg text-muted-foreground text-pretty">
-            Designed specifically for students from underserved communities, VidyAI++ removes 
-            barriers to quality education with cutting-edge AI technology.
+            {t("features.sub")}
           </p>
         </div>
 

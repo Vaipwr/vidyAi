@@ -8,12 +8,15 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { BookOpen, Menu, X, ChevronDown } from "lucide-react"
+import { BookOpen, Menu, X, ChevronDown, Check } from "lucide-react"
 import { useState, useEffect } from "react"
+import { useTranslation } from "@/lib/i18n/LanguageContext"
+import { Language } from "@/lib/i18n/dictionaries"
 
 export function LandingHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
+  const { setLanguage, language: currentLang, t } = useTranslation()
 
   useEffect(() => {
     setMounted(true)
@@ -36,26 +39,32 @@ export function LandingHeader() {
         {/* Desktop Navigation */}
         <div className="hidden lg:flex lg:items-center lg:gap-8">
           <Link href="/dashboard/courses" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
-            Courses
+            {t("nav.courses")}
           </Link>
           <Link href="/dashboard/mentors" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
-            Mentors
+            {t("nav.mentors")}
           </Link>
           <Link href="/dashboard/community" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
-            Community
+            {t("nav.community")}
           </Link>
           {mounted && (
             <DropdownMenu>
               <DropdownMenuTrigger className="flex items-center gap-1 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
-                Languages <ChevronDown className="h-4 w-4" />
+                {t("nav.languages")} <ChevronDown className="h-4 w-4" />
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="center">
-                <DropdownMenuItem>English</DropdownMenuItem>
-                <DropdownMenuItem>Hindi</DropdownMenuItem>
-                <DropdownMenuItem>Marathi</DropdownMenuItem>
-                <DropdownMenuItem>Tamil</DropdownMenuItem>
-                <DropdownMenuItem>Telugu</DropdownMenuItem>
-                <DropdownMenuItem>Bengali</DropdownMenuItem>
+              <DropdownMenuContent align="center" className="w-40">
+                <DropdownMenuItem onClick={() => setLanguage("en")} className="justify-between">
+                  English {currentLang === "en" && <Check className="h-4 w-4" />}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setLanguage("hi")} className="justify-between">
+                  Hindi (हिंदी) {currentLang === "hi" && <Check className="h-4 w-4" />}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setLanguage("mr")} className="justify-between">
+                  Marathi (मराठी) {currentLang === "mr" && <Check className="h-4 w-4" />}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setLanguage("ta")} className="justify-between">
+                  Tamil (தமிழ்) {currentLang === "ta" && <Check className="h-4 w-4" />}
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           )}
@@ -64,7 +73,7 @@ export function LandingHeader() {
         {/* CTA Button */}
         <div className="hidden lg:flex lg:items-center lg:gap-4">
           <Button asChild>
-            <Link href="/dashboard">Start Learning</Link>
+            <Link href="/dashboard">{t("nav.start")}</Link>
           </Button>
         </div>
 
@@ -91,21 +100,21 @@ export function LandingHeader() {
               className="block rounded-lg px-3 py-2 text-base font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
               onClick={() => setMobileMenuOpen(false)}
             >
-              Courses
+              {t("nav.courses")}
             </Link>
             <Link
               href="/dashboard/mentors"
               className="block rounded-lg px-3 py-2 text-base font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
               onClick={() => setMobileMenuOpen(false)}
             >
-              Mentors
+              {t("nav.mentors")}
             </Link>
             <Link
               href="/dashboard/community"
               className="block rounded-lg px-3 py-2 text-base font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
               onClick={() => setMobileMenuOpen(false)}
             >
-              Community
+              {t("nav.community")}
             </Link>
             <div className="border-t border-border pt-4">
               <Link
@@ -113,7 +122,7 @@ export function LandingHeader() {
                 className="mt-2 block rounded-lg bg-primary px-3 py-2 text-center text-base font-medium text-primary-foreground"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Start Learning
+                {t("nav.start")}
               </Link>
             </div>
           </div>

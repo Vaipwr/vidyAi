@@ -8,11 +8,13 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ForumPostCard } from "@/components/forum/forum-post-card"
 import { CreatePostDialog } from "@/components/forum/create-post-dialog"
 import { Search, Plus, TrendingUp, Clock, MessageSquare } from "lucide-react"
+import { useTranslation } from "@/lib/i18n/LanguageContext"
 import type { ForumPost } from "@/lib/db"
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
 export default function CommunityPage() {
+  const { t } = useTranslation()
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("all")
   const [sortBy, setSortBy] = useState("recent")
@@ -36,9 +38,9 @@ export default function CommunityPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-foreground">Community Forum</h1>
+        <h1 className="text-2xl font-bold text-foreground">{t("dash.comm.title")}</h1>
         <p className="mt-1 text-muted-foreground">
-          Connect with fellow learners, share knowledge, and get help
+          {t("dash.comm.desc")}
         </p>
       </div>
 
@@ -47,7 +49,7 @@ export default function CommunityPage() {
         <div className="relative flex-1 max-w-md">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
-            placeholder="Search discussions..."
+            placeholder={t("dash.comm.search")}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-10"
@@ -55,7 +57,7 @@ export default function CommunityPage() {
         </div>
         <Button onClick={() => setShowCreateDialog(true)}>
           <Plus className="mr-2 h-4 w-4" />
-          New Post
+          {t("dash.comm.btn.new")}
         </Button>
       </div>
 
@@ -65,11 +67,10 @@ export default function CommunityPage() {
           <button
             key={category.id}
             onClick={() => setSelectedCategory(category.id)}
-            className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
-              selectedCategory === category.id
-                ? "bg-primary text-primary-foreground"
-                : "bg-muted text-muted-foreground hover:bg-muted/80"
-            }`}
+            className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${selectedCategory === category.id
+              ? "bg-primary text-primary-foreground"
+              : "bg-muted text-muted-foreground hover:bg-muted/80"
+              }`}
           >
             {category.label}
           </button>
@@ -81,11 +82,11 @@ export default function CommunityPage() {
         <TabsList>
           <TabsTrigger value="recent" className="gap-2">
             <Clock className="h-4 w-4" />
-            Recent
+            {t("dash.comm.tab.recent")}
           </TabsTrigger>
           <TabsTrigger value="popular" className="gap-2">
             <TrendingUp className="h-4 w-4" />
-            Popular
+            {t("dash.comm.tab.popular")}
           </TabsTrigger>
         </TabsList>
       </Tabs>
@@ -109,12 +110,12 @@ export default function CommunityPage() {
       ) : (
         <div className="rounded-xl border border-border bg-card p-12 text-center">
           <MessageSquare className="mx-auto h-12 w-12 text-muted-foreground" />
-          <h3 className="mt-4 text-lg font-semibold text-foreground">No posts yet</h3>
+          <h3 className="mt-4 text-lg font-semibold text-foreground">{t("dash.comm.empty.title")}</h3>
           <p className="mt-2 text-muted-foreground">
-            Be the first to start a discussion!
+            {t("dash.comm.empty.desc")}
           </p>
           <Button className="mt-4" onClick={() => setShowCreateDialog(true)}>
-            Create Post
+            {t("dash.comm.btn.create")}
           </Button>
         </div>
       )}

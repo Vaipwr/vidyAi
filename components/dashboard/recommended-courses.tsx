@@ -1,8 +1,11 @@
+'use client'
+
 import Link from "next/link"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { ArrowRight, BookOpen } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { useTranslation } from "@/lib/i18n/LanguageContext"
 import type { Course } from "@/lib/db"
 
 interface RecommendedCoursesProps {
@@ -10,13 +13,15 @@ interface RecommendedCoursesProps {
 }
 
 export function RecommendedCourses({ courses }: RecommendedCoursesProps) {
+  const { t } = useTranslation()
+
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle className="text-base">Recommended</CardTitle>
+        <CardTitle className="text-base">{t("dash.rec.title")}</CardTitle>
         <Button variant="ghost" size="sm" asChild>
           <Link href="/dashboard/courses" className="gap-1">
-            All <ArrowRight className="h-4 w-4" />
+            {t("dash.rec.all")} <ArrowRight className="h-4 w-4" />
           </Link>
         </Button>
       </CardHeader>
@@ -48,7 +53,7 @@ export function RecommendedCourses({ courses }: RecommendedCoursesProps) {
                     {course.subject}
                   </Badge>
                   <span className="text-xs text-muted-foreground">
-                    {course.videoCount} videos
+                    {course.videoCount} {t("dash.rec.videos")}
                   </span>
                 </div>
               </div>

@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Award, Download, Share2, Eye } from "lucide-react"
 import { format } from "date-fns"
+import { useTranslation } from "@/lib/i18n/LanguageContext"
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
@@ -17,6 +18,7 @@ interface Certificate {
 }
 
 export default function CertificatesPage() {
+  const { t } = useTranslation()
   const { data: certificates, isLoading } = useSWR<Certificate[]>(
     "/api/certificates",
     fetcher
@@ -25,11 +27,11 @@ export default function CertificatesPage() {
 
   const handleDownload = async (cert: Certificate) => {
     setDownloading(cert.id)
-    
+
     try {
       // Dynamic import of jsPDF
       const { jsPDF } = await import("jspdf")
-      
+
       const doc = new jsPDF({
         orientation: "landscape",
         unit: "mm",
@@ -118,9 +120,9 @@ export default function CertificatesPage() {
     <div className="mx-auto max-w-5xl px-4 py-8">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-foreground">My Certificates</h1>
+        <h1 className="text-3xl font-bold text-foreground">{t("dash.cert.title")}</h1>
         <p className="mt-2 text-muted-foreground">
-          View and download your course completion certificates
+          {t("dash.cert.desc")}
         </p>
       </div>
 
@@ -134,7 +136,7 @@ export default function CertificatesPage() {
                   <Award className="h-16 w-16 text-primary-foreground/20" />
                 </div>
                 <div className="absolute bottom-4 left-4">
-                  <p className="text-sm text-primary-foreground/80">Certificate of Completion</p>
+                  <p className="text-sm text-primary-foreground/80">{t("dash.cert.badge")}</p>
                   <h3 className="text-lg font-bold text-primary-foreground">
                     {cert.course_title}
                   </h3>
@@ -142,7 +144,7 @@ export default function CertificatesPage() {
               </div>
               <CardContent className="p-4">
                 <p className="text-sm text-muted-foreground">
-                  Issued on {format(new Date(cert.issued_at), "MMMM d, yyyy")}
+                  {t("dash.cert.issued")} {format(new Date(cert.issued_at), "MMMM d, yyyy")}
                 </p>
                 <div className="mt-4 flex gap-2">
                   <Button
@@ -156,11 +158,11 @@ export default function CertificatesPage() {
                     ) : (
                       <Download className="mr-2 h-4 w-4" />
                     )}
-                    Download PDF
+                    {t("dash.cert.btn.download")}
                   </Button>
                   <Button variant="ghost" size="sm">
                     <Share2 className="mr-2 h-4 w-4" />
-                    Share
+                    {t("dash.cert.btn.share")}
                   </Button>
                 </div>
               </CardContent>
@@ -170,12 +172,12 @@ export default function CertificatesPage() {
       ) : (
         <Card className="p-12 text-center">
           <Award className="mx-auto h-16 w-16 text-muted-foreground" />
-          <h3 className="mt-4 text-lg font-semibold text-foreground">No certificates yet</h3>
+          <h3 className="mt-4 text-lg font-semibold text-foreground">{t("dash.cert.empty.title")}</h3>
           <p className="mt-2 text-muted-foreground">
-            Complete a course to earn your first certificate!
+            {t("dash.cert.empty.desc")}
           </p>
           <Button className="mt-4" asChild>
-            <a href="/dashboard/courses">Browse Courses</a>
+            <a href="/dashboard/courses">{t("dash.cert.empty.btn")}</a>
           </Button>
         </Card>
       )}

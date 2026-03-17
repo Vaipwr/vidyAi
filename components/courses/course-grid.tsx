@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { BookOpen, Clock, Video, ArrowRight, Star, Users } from "lucide-react"
+import { useTranslation } from "@/lib/i18n/LanguageContext"
 import type { Course } from "@/lib/db"
 
 interface CourseGridProps {
@@ -18,15 +19,17 @@ const levelColors: Record<string, string> = {
 }
 
 export function CourseGrid({ courses }: CourseGridProps) {
+  const { t } = useTranslation()
+
   if (courses.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-16 text-center">
         <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-muted">
           <BookOpen className="h-8 w-8 text-muted-foreground" />
         </div>
-        <h3 className="text-lg font-semibold text-foreground">No courses found</h3>
+        <h3 className="text-lg font-semibold text-foreground">{t("courses.empty.title")}</h3>
         <p className="mt-2 text-sm text-muted-foreground">
-          Try adjusting your filters or check back later for new courses.
+          {t("courses.empty.desc")}
         </p>
       </div>
     )
@@ -76,14 +79,14 @@ export function CourseGrid({ courses }: CourseGridProps) {
 
             {/* Instructor */}
             <p className="mt-2 text-sm text-muted-foreground">
-              by <span className="font-medium text-foreground">{course.instructor}</span>
+              {t("courses.stats.by")} <span className="font-medium text-foreground">{course.instructor}</span>
             </p>
 
             {/* Stats */}
             <div className="mt-4 flex items-center gap-4 text-sm text-muted-foreground">
               <div className="flex items-center gap-1">
                 <Video className="h-4 w-4" />
-                {course.videoCount} videos
+                {course.videoCount} {t("courses.stats.videos")}
               </div>
               <div className="flex items-center gap-1">
                 <Clock className="h-4 w-4" />

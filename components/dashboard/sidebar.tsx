@@ -1,15 +1,16 @@
 "use client"
 
 import Link from "next/link"
+import { useTranslation } from "@/lib/i18n/LanguageContext"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
-import { 
-  BookOpen, 
-  LayoutDashboard, 
-  Video, 
-  Users, 
-  MessageSquare, 
-  BarChart3, 
+import {
+  BookOpen,
+  LayoutDashboard,
+  Video,
+  Users,
+  MessageSquare,
+  BarChart3,
   Bookmark,
   Bell,
   Settings,
@@ -18,23 +19,24 @@ import {
 } from "lucide-react"
 
 const navigation = [
-  { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-  { name: "My Courses", href: "/dashboard/courses", icon: Video },
-  { name: "Mentors", href: "/dashboard/mentors", icon: Users },
-  { name: "Community", href: "/dashboard/community", icon: MessageSquare },
-  { name: "Bookmarks", href: "/dashboard/bookmarks", icon: Bookmark },
-  { name: "Analytics", href: "/dashboard/analytics", icon: BarChart3 },
-  { name: "Certificates", href: "/dashboard/certificates", icon: Award },
-  { name: "Notifications", href: "/dashboard/notifications", icon: Bell },
+  { nameKey: "nav.dashboard", href: "/dashboard", icon: LayoutDashboard },
+  { nameKey: "nav.courses", href: "/dashboard/courses", icon: Video },
+  { nameKey: "nav.mentors", href: "/dashboard/mentors", icon: Users },
+  { nameKey: "nav.community", href: "/dashboard/community", icon: MessageSquare },
+  { nameKey: "nav.bookmarks", href: "/dashboard/bookmarks", icon: Bookmark },
+  { nameKey: "nav.analytics", href: "/dashboard/analytics", icon: BarChart3 },
+  { nameKey: "nav.certificates", href: "/dashboard/certificates", icon: Award },
+  { nameKey: "nav.notifications", href: "/dashboard/notifications", icon: Bell },
 ]
 
 const secondaryNav = [
-  { name: "Settings", href: "/dashboard/settings", icon: Settings },
-  { name: "Help & Support", href: "/dashboard/help", icon: HelpCircle },
+  { nameKey: "nav.settings", href: "/dashboard/settings", icon: Settings },
+  { nameKey: "nav.help", href: "/dashboard/help", icon: HelpCircle },
 ]
 
 export function DashboardSidebar() {
   const pathname = usePathname()
+  const { t } = useTranslation()
 
   return (
     <>
@@ -59,7 +61,7 @@ export function DashboardSidebar() {
               const isActive = pathname === item.href || pathname.startsWith(item.href + "/")
               return (
                 <Link
-                  key={item.name}
+                  key={item.nameKey}
                   href={item.href}
                   className={cn(
                     "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
@@ -69,7 +71,7 @@ export function DashboardSidebar() {
                   )}
                 >
                   <item.icon className={cn("h-5 w-5", isActive && "text-sidebar-primary")} />
-                  {item.name}
+                  {t(item.nameKey)}
                 </Link>
               )
             })}
@@ -82,7 +84,7 @@ export function DashboardSidebar() {
               const isActive = pathname === item.href
               return (
                 <Link
-                  key={item.name}
+                  key={item.nameKey}
                   href={item.href}
                   className={cn(
                     "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
@@ -92,7 +94,7 @@ export function DashboardSidebar() {
                   )}
                 >
                   <item.icon className="h-5 w-5" />
-                  {item.name}
+                  {t(item.nameKey)}
                 </Link>
               )
             })}

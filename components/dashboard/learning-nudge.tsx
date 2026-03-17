@@ -5,8 +5,10 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { X, Lightbulb, ArrowRight } from "lucide-react"
 import Link from "next/link"
+import { useTranslation } from "@/lib/i18n/LanguageContext"
 
 export function LearningNudge() {
+  const { t } = useTranslation()
   const [dismissed, setDismissed] = useState(false)
 
   if (dismissed) return null
@@ -18,15 +20,15 @@ export function LearningNudge() {
           <Lightbulb className="h-5 w-5 text-primary" />
         </div>
         <div className="min-w-0 flex-1">
-          <p className="font-medium text-foreground">Daily Learning Tip</p>
+          <p className="font-medium text-foreground">{t("dash.lun.title")}</p>
           <p className="text-sm text-muted-foreground">
-            Students who maintain a streak learn 2x faster. Keep your streak going!
+            {t("dash.lun.desc")}
           </p>
         </div>
         <div className="flex shrink-0 items-center gap-2">
           <Button size="sm" variant="default" asChild className="hidden sm:inline-flex">
             <Link href="/dashboard/courses" className="gap-1">
-              Start Learning <ArrowRight className="h-4 w-4" />
+              {t("dash.lun.btn")} <ArrowRight className="h-4 w-4" />
             </Link>
           </Button>
           <Button
@@ -36,7 +38,7 @@ export function LearningNudge() {
             onClick={() => setDismissed(true)}
           >
             <X className="h-4 w-4" />
-            <span className="sr-only">Dismiss</span>
+            <span className="sr-only">{t("dash.lun.dismiss")}</span>
           </Button>
         </div>
       </CardContent>

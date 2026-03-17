@@ -1,42 +1,46 @@
+"use client"
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Star } from "lucide-react"
+import { useTranslation } from "@/lib/i18n/LanguageContext"
 
 const testimonials = [
   {
-    content: "VidyAI++ detected when I was confused during algebra and explained it in Hindi. It felt like having a personal teacher who understands me!",
+    contentKey: "test.1.content",
     author: "Priya Kumari",
-    role: "Class 10 Student, Bihar",
+    roleKey: "test.1.role",
     avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150",
     rating: 5,
   },
   {
-    content: "As a mentor on the platform, I can help students across India in their own language. The emotion analytics help me understand where students struggle most.",
+    contentKey: "test.2.content",
     author: "Dr. Ramesh Iyer",
-    role: "Mathematics Mentor, Chennai",
+    roleKey: "test.2.role",
     avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150",
     rating: 5,
   },
   {
-    content: "The offline feature is a blessing. I download lessons at school where there is WiFi and study at home. My grades have improved significantly!",
+    contentKey: "test.3.content",
     author: "Rahul Sharma",
-    role: "Class 12 Student, Rajasthan",
+    roleKey: "test.3.role",
     avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150",
     rating: 5,
   },
 ]
 
 export function LandingTestimonials() {
+  const { t } = useTranslation()
+
   return (
     <section className="px-4 py-20 lg:py-28">
       <div className="mx-auto max-w-7xl">
         {/* Section Header */}
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl text-balance">
-            Loved by{" "}
-            <span className="text-primary">Students & Educators</span>
+            {t("test.title")}
           </h2>
           <p className="mt-4 text-lg text-muted-foreground text-pretty">
-            Join thousands of students who are transforming their learning journey with VidyAI++
+            {t("test.sub")}
           </p>
         </div>
 
@@ -57,7 +61,7 @@ export function LandingTestimonials() {
 
                 {/* Content */}
                 <p className="mt-4 text-muted-foreground leading-relaxed">
-                  &ldquo;{testimonial.content}&rdquo;
+                  &ldquo;{t(testimonial.contentKey)}&rdquo;
                 </p>
               </div>
 
@@ -71,7 +75,7 @@ export function LandingTestimonials() {
                 </Avatar>
                 <div>
                   <p className="font-medium text-foreground">{testimonial.author}</p>
-                  <p className="text-sm text-muted-foreground">{testimonial.role}</p>
+                  <p className="text-sm text-muted-foreground">{t(testimonial.roleKey)}</p>
                 </div>
               </div>
             </div>

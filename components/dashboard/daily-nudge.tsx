@@ -20,6 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { useTranslation } from "@/lib/i18n/LanguageContext"
 
 interface NudgeSettings {
   enabled: boolean
@@ -28,6 +29,7 @@ interface NudgeSettings {
 }
 
 export function DailyNudge() {
+  const { t } = useTranslation()
   const [settings, setSettings] = useState<NudgeSettings>({
     enabled: false,
     time: "09:00",
@@ -111,8 +113,8 @@ export function DailyNudge() {
       actions: [
         { action: "continue", title: "Continue Learning" },
         { action: "later", title: "Remind Later" },
-      ] as NotificationAction[],
-    })
+      ] as any,
+    } as any)
   }
 
   const testNudge = () => {
@@ -132,7 +134,7 @@ export function DailyNudge() {
       <CardHeader className="pb-3">
         <CardTitle className="flex items-center gap-2 text-lg">
           <Bell className="h-5 w-5 text-primary" />
-          Daily Learning Nudges
+          {t("dash.dn.title")}
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -140,19 +142,19 @@ export function DailyNudge() {
           <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-4">
             <div className="flex items-center gap-2 text-destructive">
               <BellOff className="h-5 w-5" />
-              <p className="text-sm font-medium">Notifications Blocked</p>
+              <p className="text-sm font-medium">{t("dash.dn.blocked.title")}</p>
             </div>
             <p className="mt-2 text-xs text-muted-foreground">
-              Please enable notifications in your browser settings to receive learning reminders.
+              {t("dash.dn.blocked.desc")}
             </p>
           </div>
         ) : (
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div className="space-y-0.5">
-                <Label htmlFor="nudge-enabled">Enable Daily Reminders</Label>
+                <Label htmlFor="nudge-enabled">{t("dash.dn.enable.label")}</Label>
                 <p className="text-xs text-muted-foreground">
-                  Get personalized learning recaps
+                  {t("dash.dn.enable.desc")}
                 </p>
               </div>
               <Switch
@@ -169,7 +171,7 @@ export function DailyNudge() {
                 <div className="flex items-center gap-4">
                   <div className="flex-1">
                     <Label htmlFor="nudge-time" className="text-sm">
-                      Reminder Time
+                      {t("dash.dn.time")}
                     </Label>
                     <div className="mt-1 flex items-center gap-2">
                       <Clock className="h-4 w-4 text-muted-foreground" />
@@ -184,7 +186,7 @@ export function DailyNudge() {
                   </div>
                   <div className="flex-1">
                     <Label htmlFor="nudge-frequency" className="text-sm">
-                      Frequency
+                      {t("dash.dn.freq.label")}
                     </Label>
                     <Select
                       value={settings.frequency}
@@ -196,8 +198,8 @@ export function DailyNudge() {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="daily">Daily</SelectItem>
-                        <SelectItem value="weekdays">Weekdays Only</SelectItem>
+                        <SelectItem value="daily">{t("dash.dn.freq.daily")}</SelectItem>
+                        <SelectItem value="weekdays">{t("dash.dn.freq.weekdays")}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -206,18 +208,18 @@ export function DailyNudge() {
                 <div className="rounded-lg bg-muted p-3">
                   <h4 className="flex items-center gap-2 text-sm font-medium">
                     <Sparkles className="h-4 w-4 text-primary" />
-                    What you will receive:
+                    {t("dash.dn.receive.title")}
                   </h4>
                   <ul className="mt-2 space-y-1 text-xs text-muted-foreground">
-                    <li>- Daily learning progress summary</li>
-                    <li>- Current streak motivation</li>
-                    <li>- Next recommended video with offline download link</li>
-                    <li>- Personalized tips based on your emotions</li>
+                    <li>- {t("dash.dn.receive.1")}</li>
+                    <li>- {t("dash.dn.receive.2")}</li>
+                    <li>- {t("dash.dn.receive.3")}</li>
+                    <li>- {t("dash.dn.receive.4")}</li>
                   </ul>
                 </div>
 
                 <Button variant="outline" size="sm" onClick={testNudge}>
-                  Test Notification
+                  {t("dash.dn.test")}
                 </Button>
               </>
             )}
@@ -227,42 +229,42 @@ export function DailyNudge() {
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
           <DialogTrigger asChild>
             <Button variant="link" className="mt-4 h-auto p-0 text-xs">
-              Learn more about nudges
+              {t("dash.dn.dialog.trigger")}
             </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>About Daily Learning Nudges</DialogTitle>
+              <DialogTitle>{t("dash.dn.dialog.title")}</DialogTitle>
             </DialogHeader>
             <div className="space-y-4">
               <p className="text-sm text-muted-foreground">
-                Daily learning nudges help you stay consistent with your education journey, especially in low-bandwidth environments.
+                {t("dash.dn.dialog.desc")}
               </p>
               <div className="space-y-3">
                 <div className="flex items-start gap-3">
                   <Bell className="mt-0.5 h-5 w-5 text-primary" />
                   <div>
-                    <h4 className="text-sm font-medium">Personalized Recaps</h4>
+                    <h4 className="text-sm font-medium">{t("dash.dn.feat1.title")}</h4>
                     <p className="text-xs text-muted-foreground">
-                      Get a summary of what you learned yesterday and suggestions for today.
+                      {t("dash.dn.feat1.desc")}
                     </p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <Download className="mt-0.5 h-5 w-5 text-primary" />
                   <div>
-                    <h4 className="text-sm font-medium">Offline Ready</h4>
+                    <h4 className="text-sm font-medium">{t("dash.dn.feat2.title")}</h4>
                     <p className="text-xs text-muted-foreground">
-                      Each nudge includes download links for your next videos, perfect for areas with unreliable internet.
+                      {t("dash.dn.feat2.desc")}
                     </p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <Sparkles className="mt-0.5 h-5 w-5 text-primary" />
                   <div>
-                    <h4 className="text-sm font-medium">Privacy First</h4>
+                    <h4 className="text-sm font-medium">{t("dash.dn.feat3.title")}</h4>
                     <p className="text-xs text-muted-foreground">
-                      All data stays on your device. We never share your learning patterns.
+                      {t("dash.dn.feat3.desc")}
                     </p>
                   </div>
                 </div>

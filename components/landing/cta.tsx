@@ -1,15 +1,20 @@
+"use client"
+
 import Link from "next/link"
+import { useTranslation } from "@/lib/i18n/LanguageContext"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, CheckCircle } from "lucide-react"
 
 const benefits = [
-  "Free access to all courses",
-  "AI-powered explanations",
-  "10+ Indian languages",
-  "No credit card required",
+  "cta.ben.1",
+  "cta.ben.2",
+  "cta.ben.3",
+  "cta.ben.4",
 ]
 
 export function LandingCTA() {
+  const { t } = useTranslation()
+
   return (
     <section className="px-4 py-20 lg:py-28">
       <div className="mx-auto max-w-7xl">
@@ -22,11 +27,10 @@ export function LandingCTA() {
 
           <div className="relative mx-auto max-w-2xl">
             <h2 className="text-3xl font-bold tracking-tight text-primary-foreground sm:text-4xl text-balance">
-              Start Your Learning Journey Today
+              {t("cta.title")}
             </h2>
             <p className="mt-4 text-lg text-primary-foreground/80 text-pretty">
-              Join over 50,000 students who are already learning smarter with AI. 
-              No barriers, no boundaries, just education.
+              {t("cta.sub")}
             </p>
 
             {/* Benefits List */}
@@ -34,7 +38,7 @@ export function LandingCTA() {
               {benefits.map((benefit) => (
                 <div key={benefit} className="flex items-center gap-2 text-primary-foreground/90">
                   <CheckCircle className="h-5 w-5 text-primary-foreground" />
-                  <span className="text-sm font-medium">{benefit}</span>
+                  <span className="text-sm font-medium">{t(benefit)}</span>
                 </div>
               ))}
             </div>
@@ -48,7 +52,7 @@ export function LandingCTA() {
                 asChild
               >
                 <Link href="/register">
-                  Get Started Free
+                  {t("cta.btn1")}
                   <ArrowRight className="h-5 w-5" />
                 </Link>
               </Button>
@@ -58,7 +62,7 @@ export function LandingCTA() {
                 className="text-base font-medium text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground"
                 asChild
               >
-                <Link href="/courses">Browse Courses</Link>
+                <Link href="/courses">{t("cta.btn2")}</Link>
               </Button>
             </div>
           </div>

@@ -10,8 +10,11 @@ import {
   DialogTrigger,
   DialogTitle,
 } from "@/components/ui/dialog"
+import { useTranslation } from "@/lib/i18n/LanguageContext"
 
 export function LandingHero() {
+  const { t } = useTranslation()
+
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-primary/5 via-background to-background px-4 py-20 lg:py-32">
       {/* Background decorations */}
@@ -26,26 +29,25 @@ export function LandingHero() {
           <div className="space-y-8">
             <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5">
               <Sparkles className="h-4 w-4 text-primary" />
-              <span className="text-sm font-medium text-primary">AI-Powered Learning Platform</span>
+              <span className="text-sm font-medium text-primary">{t("hero.badge")}</span>
             </div>
 
             <div className="space-y-4">
               <h1 className="text-4xl font-extrabold leading-tight tracking-tight text-foreground sm:text-5xl lg:text-6xl">
-                <span className="text-balance">Learn in Your</span>{" "}
+                <span className="text-balance">{t("hero.title1")}</span>{" "}
                 <span className="bg-gradient-to-r from-primary via-primary to-accent bg-clip-text text-transparent">
-                  Mother Tongue
+                  {t("hero.title2")}
                 </span>
               </h1>
               <p className="max-w-xl text-lg leading-relaxed text-muted-foreground text-pretty">
-                VidyAI++ uses AI to detect when you are confused and provides instant explanations
-                in your preferred language. Education that understands you.
+                {t("hero.desc")}
               </p>
             </div>
 
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
               <Button size="lg" className="gap-2 text-base" asChild>
                 <Link href="/register">
-                  Start Learning Free
+                  {t("hero.startLearning")}
                   <ArrowRight className="h-5 w-5" />
                 </Link>
               </Button>
@@ -53,7 +55,7 @@ export function LandingHero() {
                 <DialogTrigger asChild>
                   <Button size="lg" variant="outline" className="gap-2 text-base">
                     <Play className="h-5 w-5" />
-                    Watch Demo
+                    {t("hero.watchDemo")}
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="max-w-4xl p-0 overflow-hidden bg-black/95 border-none">
