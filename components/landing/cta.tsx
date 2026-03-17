@@ -45,25 +45,23 @@ export function LandingCTA() {
 
             {/* CTA Buttons */}
             <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <Button
-                size="lg"
-                variant="secondary"
-                className="gap-2 text-base font-semibold"
-                asChild
-              >
-                <Link href="/register">
+                <Button
+                  size="lg"
+                  variant="secondary"
+                  className="gap-2 text-base font-semibold"
+                  onClick={() => window.location.href = '/dashboard'}
+                >
                   {t("cta.btn1")}
                   <ArrowRight className="h-5 w-5" />
-                </Link>
-              </Button>
-              <Button
-                size="lg"
-                variant="ghost"
-                className="text-base font-medium text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground"
-                asChild
-              >
-                <Link href="/courses">{t("cta.btn2")}</Link>
-              </Button>
+                </Button>
+                <Button
+                  size="lg"
+                  variant="ghost"
+                  className="text-base font-medium text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground"
+                  asChild
+                >
+                  <Link href="/courses">{t("cta.btn2")}</Link>
+                </Button>
             </div>
           </div>
         </div>
