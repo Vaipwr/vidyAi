@@ -196,7 +196,7 @@ export function DashboardHeader({ user }: DashboardHeaderProps) {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <Link href="/dashboard" className="flex items-center gap-2">
+              <Link href="/dashboard/profile" className="flex items-center gap-2">
                 <User className="h-4 w-4" />
                 Profile
               </Link>
@@ -206,6 +206,15 @@ export function DashboardHeader({ user }: DashboardHeaderProps) {
                 <Settings className="h-4 w-4" />
                 Settings
               </Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={() => {
+              // Simple logout: clear localStorage and redirect to landing
+              localStorage.clear();
+              window.location.href = "/";
+            }} className="flex items-center gap-2 text-destructive">
+              <User className="h-4 w-4" />
+              Logout
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

@@ -18,7 +18,9 @@ export default function MentorsPage() {
   const [selectedMentor, setSelectedMentor] = useState<Mentor | null>(null)
 
   const { data: mentors, isLoading } = useSWR<Mentor[]>(
-    `/api/mentors?expertise=${selectedExpertise}&search=${searchQuery}`,
+    selectedExpertise === "all"
+      ? `/api/mentors?search=${searchQuery}`
+      : `/api/mentors?expertise=${selectedExpertise}&search=${searchQuery}`,
     fetcher
   )
 
@@ -36,9 +38,9 @@ export default function MentorsPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-foreground">{t("dash.mentors.title")}</h1>
+        <h1 className="text-2xl font-bold text-foreground">Mentors</h1>
         <p className="mt-1 text-muted-foreground">
-          {t("dash.mentors.desc")}
+          Mentors
         </p>
       </div>
 

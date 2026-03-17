@@ -108,13 +108,8 @@ export function DailyNudge() {
     new Notification("VidyAI++ Learning Reminder", {
       body: `You have completed ${completedToday} videos today. Your streak is ${streak} days. Next up: "${nextVideo}"`,
       icon: "/favicon.ico",
-      tag: "daily-nudge",
-      requireInteraction: true,
-      actions: [
-        { action: "continue", title: "Continue Learning" },
-        { action: "later", title: "Remind Later" },
-      ] as any,
-    } as any)
+      tag: "daily-nudge"
+    })
   }
 
   const testNudge = () => {
